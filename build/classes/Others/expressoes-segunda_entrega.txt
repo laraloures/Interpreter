@@ -1,0 +1,90 @@
+Suponha as seguintes classes:
+-----------------------------
+
+- Expressao
+    - Metodo abstrato: double avalia()
+    
+- ExpVariavel (sublasse de Expressao)
+    - Atributos: nomevar
+    - Metodo: double avalia() 
+    
+- ExpConstante (subclasse de Expressao)
+    - Atributos: valor
+    - Metodo: double avalia() 
+    
+- ExpBinaria (subclasse de Expressao)
+    - Atributos: operador, exp1, exp2
+    - Metodo: double avalia() 
+    
+
+Suponha a seguinte modificação na classe Interpretador:
+-----------------------------------------------------
+
+import java.util.Stack;
+
+class Interpretador {
+
+  private Stack pilha;
+  private String palavraAtual;
+  
+  private void trataExpressao() {
+    palavraAtual= arq.proximaPalavra();
+    pilha= new Stack();
+    expressao();
+    raizArvoreExpressao= pilha.pop();
+  }
+  
+  private void expressao() {
+     termo();
+     while ("palavraAtual == +") or ("palavraAtual == -") {
+       op= palavraAtual;
+       palavraAtual= arq.proximaPalavra();
+       termo();
+       exp1= pilha.pop();
+       exp2= pilha.pop();
+       pilha.push(new ExpBinaria(op,exp1,exp2));
+     }  
+  }
+
+  private void termo() {
+     fator();
+     while ("palavraAtual == *") or ("palavraAtual == /") {
+       op= palavraAtual;
+       palavraAtual= arq.proximaPalavra();
+       fator();
+       exp1= pilha.pop();
+       exp2= pilha.pop();
+       pilha.push(new ExpBinaria(op,exp1,exp2));
+     }  
+  }
+
+
+  private void fator() {
+    if "palavraAtual == variável" {
+       pilha.push(new ExpVariavel("nome da variável"));
+       palavraAtual= arq.proximaPalavra();
+    }   
+    else if "palavraAtual == número real" {
+       pilha.push(new ExpConstante("valor do real"));
+       palavraAtual= arq.proximaPalavra();
+    }   
+    else if "palavraAtual == ("
+       palavraAtual= arq.proximaPalavra();
+       expressao();
+       if "palavraAtual = )"
+          palavraAtual= arq.proximaPalavra();
+    }   
+  }
+
+}
+
+
+Próxima semana:
+
+- Implementar as classes e os métodos acima
+
+- Implementar comando de atribuição
+
+- Programa de teste: cálculo das raízes de uma equação do segundo grau.
+  (ler coeficientes a, b e c; calcular delta; calcular x1 e x2, supondo que
+  a equação sempre possui raízes)

@@ -1,0 +1,14 @@
+Instruções iniciais para resolução do TP 01
+
+- Vocês devem modificar os arquivos existentes e adicionar novos arquivos (caso seja necessário) para inserir as classes e métodos necessários para resolução do problema.
+
+- Já forneci as classes responsáveis por tratar os comandos "endp" e "writeln", utilizem essas classes como exemplo para o desenvolvimento
+das demais classes.
+
+- Existe uma pasta "testes" que contém arquivos de exemplo escritos em tiny que podem ser utilizados durante o desenvolvimento do TP. 
+Como eu disse em sala de aula, não se limitem a esses arquivos. Criem novos arquivos de testes e tentem cobrir o maior número de cenários.
+
+- Para entender o funcionamento do interpretador, sugiro que executem o código fornecido passando o arquivo "exemplo_wrtiln.tiny" 
+como argumento de linha de comando e acompanhem o que o programa está executando.
+
+- Para a próxima aula de laboratório: comandos de entrada e saída de dados (incluindo a atribuição direta de um valor constante às variáveis que o programa pode manipular). 

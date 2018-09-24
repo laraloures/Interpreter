@@ -1,0 +1,7 @@
+writeStr("input b");
+read(b);
+writeVar(b);
+writeStr("a = ");
+a:= b+1/2;
+writeVar(a);
+endp

@@ -1,0 +1,10 @@
+if (a = b) and (b = c) then
+   writeStr("O triangulo eh equilatero");
+else
+  if (a = b) or  (a = c) or (b = c) then
+     writeStr("O triangulo eh isosceles");
+  else
+     writeStr("O triangulo eh escaleno");
+  endif
+endif
+endp
