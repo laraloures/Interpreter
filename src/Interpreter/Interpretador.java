@@ -62,6 +62,22 @@ public class Interpretador {
                 int linhaStart = (Integer) pilhaLinha.pop();
                 trataComandoEndif(linha, linhaStart);
                 linha++;
+            }else if(comandoAtual.equals("while")){
+                pilhaLinha.push(linha);
+                trataComandoWhile(linha);
+                linha++;
+            } else if(comandoAtual.equals("endw")){
+                int linhaStart = (Integer) pilhaLinha.pop();
+                trataComandoEndW(linha, linhaStart);
+                linha++;
+            }else if(comandoAtual.equals("for")){
+                pilhaLinha.push(linha);
+                trataComandoFor(linha);
+                linha++;
+            } else if(comandoAtual.equals("endfor")){
+                int linhaStart = (Integer) pilhaLinha.pop();
+                trataComandoEndFor(linha, linhaStart);
+                linha++;
             }else if((comandoAtual.charAt(0)>=97 && comandoAtual.charAt(0) <=122)) {
                 if(arq.proximaPalavra().equals(":=")){
                     trataComandoAtrib(linha, comandoAtual.charAt(0));
@@ -139,7 +155,31 @@ public class Interpretador {
 	x.setLinhaEnd(linhaStart); 
         
     }
-      
+    
+    private void trataComandoWhile(int lin) {
+        trataExpressaoLogica();
+        ComandoWhile c= new ComandoWhile(lin, raizArvoreExpressao);
+        comandos.addElement(c);  
+     }
+     private void trataComandoEndW(int linhaStart, int linhaEnd){
+        Comando cmd = (Comando) comandos.elementAt(linhaEnd);
+        Condicao x = (Condicao) comandos.elementAt(linhaEnd);
+	x.setLinhaEnd(linhaStart); 
+        
+    }
+    private void trataComandoFor(int lin) {
+       trataExpressaoLogica();
+       ComandoFor c= new ComandoFor(lin, raizArvoreExpressao);
+       comandos.addElement(c);  
+    }
+    
+     private void trataComandoEndFor(int linhaStart, int linhaEnd){
+        Comando cmd = (Comando) comandos.elementAt(linhaEnd);
+        Condicao x = (Condicao) comandos.elementAt(linhaEnd);
+	x.setLinhaEnd(linhaStart); 
+        
+    }
+    
     private boolean verificaPalavra(String str, String chave) {
         return str.equals(chave);
     }
