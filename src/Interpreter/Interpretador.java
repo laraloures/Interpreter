@@ -61,6 +61,7 @@ public class Interpretador {
             } else if(comandoAtual.equals("endif")){
                 int linhaStart = (Integer) pilhaLinha.pop();
                 trataComandoEndif(linha, linhaStart);
+                linha++;
             }else if(comandoAtual.equals("while")){
                 pilhaLinha.push(linha);
                 trataComandoWhile(linha);
@@ -157,6 +158,8 @@ public class Interpretador {
         Condicao cmd= (Condicao) comandos.elementAt(linhaStart);
 	cmd.setLinhaEnd(linha); 
         
+        ComandoEndIf cei = new ComandoEndIf(linha);
+        comandos.addElement(cei);
     }
     
     private void trataComandoWhile(int lin) {
