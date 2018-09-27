@@ -1,0 +1,9 @@
+
+for i:= 1 to 10 do 
+  writeStr("inner for = ");
+    writeVar(i);
+  endfor
+writeStr("out for 1");
+writeStr("out for 2");
+writeStr("out for 3");
+endp

@@ -17,7 +17,7 @@ public class tiny {
          inter = new Interpretador(args[0]); // esta pegando o caminho de onde esta o .tiny de exemplo
          inter.listaArquivo();
       } else if (args.length == 0) {
-         String endereco_arq = "./src/testes/while.tiny";
+         String endereco_arq = "./src/testes/iftest.tiny";
          inter= new Interpretador(endereco_arq);  
          //inter.listaArquivo();
          inter.leArquivo();

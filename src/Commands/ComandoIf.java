@@ -19,8 +19,8 @@ public class ComandoIf extends Comando implements Condicao{
     private Expressao raiz;
 
     
-    public ComandoIf(int linhaEnd, Expressao raiz){
-        this.linhaEnd = linhaEnd;
+    public ComandoIf(int linhaIf, Expressao raiz){
+        this.linhaIf = linhaIf;
         this.raiz = raiz;
     }
     
@@ -32,9 +32,14 @@ public class ComandoIf extends Comando implements Condicao{
         double condicaoIf = raiz.avalia();
         if(condicaoIf == 1) { 
             //Se a condição for verdadeira, executa o bloco à partir do if
-            return linhaEnd + 1;
+            return linhaIf + 1;
         }
         //Se a condição for falsa, chama o bloco à partir do else
+        return linhaEnd + 1;
+    }
+
+    @Override
+    public int getLinhaEnd() {
         return linhaEnd;
     }
     

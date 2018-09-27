@@ -9,25 +9,17 @@ package Commands;
  *
  * @author Aluno
  */
-public class ComandoElse extends Comando implements Condicao{
+public class ComandoEndW extends Comando{
 
+    private int linhaStart;
     private int linhaEnd;
-    private int linhaElse;
     
-    public ComandoElse(int linhaElse){
-        this.linhaElse = linhaElse;
-    }
-    
-    public void setLinhaEnd(int linhaEnd){
+    public ComandoEndW(int linhaStart, int linhaEnd) {
+        this.linhaStart = linhaStart;
         this.linhaEnd = linhaEnd;
     }
-    
     public int executa() {
-        return linhaEnd+1;
+        return linhaStart;
     }
-
-    @Override
-    public int getLinhaEnd() {
-        return linhaEnd;
-    }
+    
 }

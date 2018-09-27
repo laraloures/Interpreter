@@ -13,12 +13,13 @@ import Expression.Expressao;
  */
 public class ComandoWhile extends Comando implements Condicao{
     private int linhaEnd;
+    private int linhaStart;
     
     private Expressao raiz;
 
     
-    public ComandoWhile(int linhaEnd, Expressao raiz){
-        this.linhaEnd = linhaEnd;
+    public ComandoWhile(int linhaStart, Expressao raiz){
+        this.linhaStart = linhaStart;
         this.raiz = raiz;
     }
     
@@ -27,14 +28,18 @@ public class ComandoWhile extends Comando implements Condicao{
     }
     
     public int executa() {
-        double condicaoIf = raiz.avalia();
-        if(condicaoIf == 1) { 
+        double condicaoWhile = raiz.avalia();
+        if(condicaoWhile == 1) { 
             //Se a condição for verdadeira, executa o bloco à partir do if
-            return linhaEnd + 1;
+            return linhaStart + 1;
         }
         //Se a condição for falsa, chama o bloco à partir do else
-        return linhaEnd;
+        return linhaEnd + 1;
     }
-    
+
+    @Override
+    public int getLinhaEnd() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
 

@@ -11,7 +11,7 @@ public class Interpretador {
     private String palavraAtual;
     private Stack pilha;
     private Stack pilhaLinha;
-    private String op;
+    //private String op;
     private Expressao raizArvoreExpressao;
     
     public Interpretador(String nome) {
@@ -56,12 +56,11 @@ public class Interpretador {
             } else if(comandoAtual.equals("else")){
                 int startIf = (Integer)pilhaLinha.pop();
                 pilhaLinha.push(linha);
-                trataComandoElse(linha, startIf);
+                trataComandoElse(startIf, linha);
                 linha++;
             } else if(comandoAtual.equals("endif")){
                 int linhaStart = (Integer) pilhaLinha.pop();
                 trataComandoEndif(linha, linhaStart);
-                linha++;
             }else if(comandoAtual.equals("while")){
                 pilhaLinha.push(linha);
                 trataComandoWhile(linha);
@@ -73,6 +72,11 @@ public class Interpretador {
             }else if(comandoAtual.equals("for")){
                 pilhaLinha.push(linha);
                 trataComandoFor(linha);
+                linha++;
+            }else if(comandoAtual.equals("endfor")){
+                int linhaStart = (Integer) pilhaLinha.pop();
+                trataComandoEndFor(linhaStart, linha);
+                //trataComandoFor(linha);
                 linha++;
             } else if(comandoAtual.equals("endfor")){
                 int linhaStart = (Integer) pilhaLinha.pop();
@@ -143,16 +147,15 @@ public class Interpretador {
     }
     
     private void trataComandoElse(int linhaIf, int linhaElse){
-        ComandoIf getIf = (ComandoIf)comandos.get(linhaElse);
-        getIf.setLinhaEnd(linhaIf+1);
-        ComandoElse ce = new ComandoElse(linhaIf);
+        ComandoIf getIf = (ComandoIf)comandos.get(linhaIf);
+        getIf.setLinhaEnd(linhaElse);
+        ComandoElse ce = new ComandoElse(linhaElse);
         comandos.addElement(ce);
     }
     
-    private void trataComandoEndif(int linhaStart, int linhaEnd){
-        Comando cmd = (Comando) comandos.elementAt(linhaEnd);
-        Condicao x = (Condicao) comandos.elementAt(linhaEnd);
-	x.setLinhaEnd(linhaStart); 
+    private void trataComandoEndif(int linha, int linhaStart){
+        Condicao cmd= (Condicao) comandos.elementAt(linhaStart);
+	cmd.setLinhaEnd(linha); 
         
     }
     
@@ -161,37 +164,39 @@ public class Interpretador {
         ComandoWhile c= new ComandoWhile(lin, raizArvoreExpressao);
         comandos.addElement(c);  
      }
-     private void trataComandoEndW(int linhaStart, int linhaEnd){
-        Comando cmd = (Comando) comandos.elementAt(linhaEnd);
-        Condicao x = (Condicao) comandos.elementAt(linhaEnd);
-	x.setLinhaEnd(linhaStart); 
+    private void trataComandoEndW(int linhaEnd, int linhaStart){
+        Comando cmd = (Comando) comandos.elementAt(linhaStart);
+        Condicao x = (Condicao) comandos.elementAt(linhaStart);
+	x.setLinhaEnd(linhaEnd); 
+        ComandoEndW cew = new ComandoEndW(linhaStart, linhaEnd);
+        comandos.addElement(cew);
         
     }
     private void trataComandoFor(int lin) {
-       trataExpressaoLogica();
-       ComandoFor c= new ComandoFor(lin, raizArvoreExpressao);
+       //trataExpressaoLogica();
+       palavraAtual = arq.proximaPalavra();
+       char variavelLoop = palavraAtual.charAt(0);
+       palavraAtual = arq.proximaPalavra(); // pega o := (para atrib)
+       palavraAtual = arq.proximaPalavra(); // pega o valor pra atribuição
+       double valor_atrib = Double.parseDouble(palavraAtual);
+       palavraAtual = arq.proximaPalavra(); // pega o "to" ou "downto"
+       String tipo_for = palavraAtual;
+       trataExpressao();
+       ComandoFor c= new ComandoFor(lin, variavelLoop, valor_atrib, tipo_for, raizArvoreExpressao);
        comandos.addElement(c);  
     }
     
      private void trataComandoEndFor(int linhaStart, int linhaEnd){
-        Comando cmd = (Comando) comandos.elementAt(linhaEnd);
-        Condicao x = (Condicao) comandos.elementAt(linhaEnd);
-	x.setLinhaEnd(linhaStart); 
+        ComandoFor getFor = (ComandoFor) comandos.elementAt(linhaStart);
+        getFor.setLinhaEnd(linhaEnd);
+        ComandoEndFor endFor = new ComandoEndFor(linhaStart, getFor.getTipo_for(), getFor.getVariavel_loop());
+        comandos.addElement(endFor);
         
     }
     
     private boolean verificaPalavra(String str, String chave) {
         return str.equals(chave);
     }
-    
-    public void executa() {
-      Comando cmd;
-      int pc= 0;
-      do {
-         cmd= (Comando) comandos.elementAt(pc);
-         pc= cmd.executa();
-      } while (pc != -1);
-   }   
     
     private void trataExpressao() {
         palavraAtual= arq.proximaPalavra();
@@ -200,34 +205,10 @@ public class Interpretador {
         raizArvoreExpressao= (Expressao) pilha.pop();
     }
     
-    private void trataExpressaoLogica() {
-        palavraAtual= arq.proximaPalavra();
-        pilha= new Stack();
-        expressaoLogica();
-        raizArvoreExpressao= (Expressao) pilha.pop();
-    }
-    
-    
-    private void expressaoLogica() {
-        termoLogico();
-        if (palavraAtual.equals("and") || palavraAtual.equals("or")) {
-            System.out.println(palavraAtual);
-            op= palavraAtual;
-            palavraAtual= arq.proximaPalavra();
-            if(palavraAtual.equals("("))
-                palavraAtual = arq.proximaPalavra();
-            termoLogico();
-            Object exp1= pilha.pop();
-            Object exp2= pilha.pop();
-            System.out.println(op);
-            pilha.push(new ExpLogica(op,exp1,exp2));
-          }  
-    }
-    
     private void expressao() {
         termo();
         while (palavraAtual.equals("+") || palavraAtual.equals("-")) {
-            op= palavraAtual;
+            String op = palavraAtual;
             palavraAtual= arq.proximaPalavra();
             termo();
             Object exp1= pilha.pop();
@@ -239,7 +220,7 @@ public class Interpretador {
     private void termo() {
         fator();
         while (palavraAtual.equals("*") || palavraAtual.equals("/")) {
-            op= palavraAtual;
+            String op = palavraAtual;
             palavraAtual= arq.proximaPalavra();
             fator();
             Object exp1= pilha.pop();
@@ -248,17 +229,62 @@ public class Interpretador {
         }  
     }
 
+    private void trataExpressaoLogica() {
+        palavraAtual= arq.proximaPalavra();
+        pilha= new Stack();
+        expressaoLogica();
+        raizArvoreExpressao= (Expressao) pilha.pop();
+    }
+    
+    private void expressaoLogica() {
+        expressaoComparativa();
+        if (palavraAtual.equals("and") || palavraAtual.equals("or") || palavraAtual.equals("not")) {
+            String op = palavraAtual;
+            palavraAtual= arq.proximaPalavra();
+            expressaoComparativa();
+            Object exp2= pilha.pop();
+            Object exp1= pilha.pop();
+            pilha.push(new ExpLogica(op,exp1,exp2));
+          }  
+    }
+    
+    private void expressaoComparativa() {
+        expressaoRelacional();
+        if (palavraAtual.equals(">") || palavraAtual.equals("<") || palavraAtual.equals("<=") || palavraAtual.equals(">=") || palavraAtual.equals("<>") || palavraAtual.equals("=")) {
+            String op = palavraAtual;
+            palavraAtual= arq.proximaPalavra();
+            expressaoRelacional();
+            Object exp2= pilha.pop();
+            Object exp1= pilha.pop();
+            pilha.push(new ExpLogica(op,exp1,exp2));
+            palavraAtual = arq.proximaPalavra();
+        }  
+    }
+    
+    private void expressaoRelacional() {
+        termoLogico();
+        while (palavraAtual.equals("+") || palavraAtual.equals("-")) {
+            String op = palavraAtual;
+            palavraAtual= arq.proximaPalavra();
+            termoLogico();
+            Object exp1= pilha.pop();
+            Object exp2= pilha.pop();
+            if( pilha.empty() ){
+               pilha.push(new ExpConstante(0.0));
+            }
+            pilha.push(new ExpBinaria(op,exp1,exp2));
+          }  
+    }
+
     private void termoLogico() {
         fatorLogico();
-        if (palavraAtual.equals(">") || palavraAtual.equals("<") || palavraAtual.equals("<=") || palavraAtual.equals(">=") || palavraAtual.equals("<>") || palavraAtual.equals("=")) {
-            op= palavraAtual;
+        while (palavraAtual.equals("*") || palavraAtual.equals("/")) {
+            String op = palavraAtual;
             palavraAtual= arq.proximaPalavra();
             fatorLogico();
             Object exp1= pilha.pop();
             Object exp2= pilha.pop();
-            System.out.println(op);
-            pilha.push(new ExpLogica(op,exp1,exp2));
-            palavraAtual = arq.proximaPalavra();
+            pilha.push(new ExpBinaria(op,exp1,exp2));
         }  
     }
 
@@ -302,4 +328,13 @@ public class Interpretador {
             palavraAtual = arq.proximaPalavra();
         }   
     }
+    
+    public void executa() {
+      Comando cmd;
+      int pc= 0;
+      do {
+          cmd= (Comando) comandos.elementAt(pc);
+          pc= cmd.executa();
+      } while (pc != -1);
+   }   
 }

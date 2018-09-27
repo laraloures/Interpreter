@@ -11,5 +11,7 @@ package Commands;
 */
 public interface Condicao {
        public void setLinhaEnd(int x);
+       
+       public int getLinhaEnd();
 }
 

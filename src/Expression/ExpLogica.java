@@ -22,32 +22,53 @@ public class ExpLogica extends Expressao{
     public double avalia(){
         Expressao ex1 = (Expressao)exp1;
         Expressao ex2 = (Expressao)exp2;
-        System.out.println("Teste: "+op);
+        //System.out.println("Teste: "+op);
         switch(op) {
             case "<":
                 if(ex1.avalia() < ex2.avalia()) 
                     return 1; 
+                else
+                    return 0;
             case ">":
                 if(ex1.avalia() > ex2.avalia()) 
                     return 1;
+                else
+                    return 0;
             case "<=":
                 if(ex1.avalia() <= ex2.avalia()) 
                     return 1;
+                else
+                    return 0;
             case ">=":
                 if(ex1.avalia() >= ex2.avalia()) 
                     return 1;
+                else
+                    return 0;
             case "<>":
                 if(ex1.avalia() != ex2.avalia()) 
                     return 1;
+                else
+                    return 0;
             case "=":   
                 if(ex1.avalia() == ex2.avalia()) 
                     return 1;
+                else
+                    return 0;
             case "and":
                 if(ex1.avalia()==1 && ex2.avalia()==1) 
                     return 1;
+                else
+                    return 0;
             case "or":
                 if(ex1.avalia()==1 || ex2.avalia()==1) 
                     return 1;
+                else
+                    return 0;
+            case "not":
+                if(ex1.avalia()==1 && ex2.avalia()==0) 
+                    return 1;
+                else
+                    return 0;
         }
         return 0;
     }
