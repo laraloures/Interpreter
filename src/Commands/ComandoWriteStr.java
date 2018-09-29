@@ -11,7 +11,7 @@ public class ComandoWriteStr extends Comando {
     }
    
     public int executa() {
-        System.out.println(texto);
+        System.out.print(texto);
        return linha+1;
     }
 }

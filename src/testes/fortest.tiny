@@ -1,10 +1,10 @@
 a := 5;
 b := 10;
-for i:= 1 to 2 + a do 
-  writeStr("inner for = ");
-    writeVar(i);
-  endfor
-writeStr("out for 1");
-writeStr("out for 2");
-writeStr("out for 3");
+for i:= 1 to a do
+    for j := 1 to b - i do
+        writeStr("*");
+    endfor
+    writeln;
+endfor
+writeStr("done");
 endp
