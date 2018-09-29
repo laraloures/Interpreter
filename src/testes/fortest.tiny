@@ -1,5 +1,6 @@
-
-for i:= 1 to 10 do 
+a := 5;
+b := 10;
+for i:= 1 to 2 + a do 
   writeStr("inner for = ");
     writeVar(i);
   endfor

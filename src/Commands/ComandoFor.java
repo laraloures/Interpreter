@@ -50,11 +50,11 @@ public class ComandoFor extends Comando implements Condicao{
             Variaveis.var[variavel_loop - 97] = (float)valor_atrib;
             var_initialized = true;
         }
-        
+        System.out.println("avalia = " + raiz.avalia());
         if(tipo_for.equals("to")){
             //for de incremento
             if(Variaveis.var[variavel_loop - 97] <= raiz.avalia()) {
-                return linha+1;
+                return linhaStart+1;
             } else {
                 var_initialized = false;
                 return linhaEnd+1;
@@ -62,7 +62,7 @@ public class ComandoFor extends Comando implements Condicao{
         } else if (tipo_for.equals("downto")){
             //for de decremento
             if(Variaveis.var[variavel_loop - 97] >= raiz.avalia()) {
-                return linha+1;
+                return linhaStart+1;
             } else {
                 var_initialized = false;
                 return linhaEnd+1;

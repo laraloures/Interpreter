@@ -30,11 +30,13 @@ public class ComandoIf extends Comando implements Condicao{
     
     public int executa() {
         double condicaoIf = raiz.avalia();
+        //System.out.println("avalia do if = ["+condicaoIf+"]");
         if(condicaoIf == 1) { 
             //Se a condição for verdadeira, executa o bloco à partir do if
             return linhaIf + 1;
         }
         //Se a condição for falsa, chama o bloco à partir do else
+        //System.out.println("linha end = "+linhaEnd);
         return linhaEnd + 1;
     }
 

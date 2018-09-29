@@ -1,0 +1,8 @@
+a := 5;
+while a <= 10 do
+    writeStr("var a = ");
+    writeVar(a);
+    a := a + 1;
+endw
+writeStr("out while");
+endp
