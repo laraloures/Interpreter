@@ -337,6 +337,7 @@ public class Interpretador {
       int pc= 0;
       do {
           cmd= (Comando) comandos.elementAt(pc);
+          System.out.println("pc ="+pc);
           pc= cmd.executa();
       } while (pc != -1);
    }   

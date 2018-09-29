@@ -30,9 +30,10 @@ public class ComandoWhile extends Comando implements Condicao{
     public int executa() {
         double condicaoWhile = raiz.avalia();
         System.out.println("condicaoWhile = "+condicaoWhile);
+        //System.out.println("linhaStart = "+linhaStart);
         if(condicaoWhile == 1) { 
             //Se a condição for verdadeira, executa o bloco à partir do if
-            return linhaStart + 1;
+            return linhaStart +1;
         }
         //Se a condição for falsa, chama o bloco à partir do else
         return linhaEnd + 1;
