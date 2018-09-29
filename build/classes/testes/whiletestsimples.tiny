@@ -1,7 +1,14 @@
 a := 5;
+b := 5;
 while a <= 10 do
-    writeStr("var a = ");
-    writeVar(a);
+    writeStr("inner while 1");
+    while b < 10 + 5 do
+        writeStr("var b = ");
+        writeVar(b);
+        b := b + 1;
+    endw
+    writeStr("inner while 1, after while 2");
+    b := 5;
     a := a + 1;
 endw
 writeStr("out while");

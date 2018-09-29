@@ -79,10 +79,12 @@ public class Interpretador {
                 trataComandoEndFor(linhaStart, linha);
                 //trataComandoFor(linha);
                 linha++;
+            /*  // Endfor repetido
             } else if(comandoAtual.equals("endfor")){
                 int linhaStart = (Integer) pilhaLinha.pop();
                 trataComandoEndFor(linha, linhaStart);
                 linha++;
+            */
             }else if((comandoAtual.charAt(0)>=97 && comandoAtual.charAt(0) <=122)) {
                 if(arq.proximaPalavra().equals(":=")){
                     trataComandoAtrib(linha, comandoAtual.charAt(0));
@@ -164,13 +166,16 @@ public class Interpretador {
     
     private void trataComandoWhile(int lin) {
         trataExpressaoLogica();
-        ComandoWhile c= new ComandoWhile(lin, raizArvoreExpressao);
-        comandos.addElement(c);  
+        //System.out.println("palavraAtual = ["+palavraAtual+"]");
+        ComandoWhile cw= new ComandoWhile(lin, raizArvoreExpressao);
+        comandos.addElement(cw);  
      }
     private void trataComandoEndW(int linhaEnd, int linhaStart){
-        Comando cmd = (Comando) comandos.elementAt(linhaStart);
-        Condicao x = (Condicao) comandos.elementAt(linhaStart);
-	x.setLinhaEnd(linhaEnd); 
+        //Comando cmd = (Comando) comandos.elementAt(linhaStart);
+        //Condicao x = (Condicao) comandos.elementAt(linhaStart);
+	//x.setLinhaEnd(linhaEnd); 
+        ComandoWhile cw = (ComandoWhile) comandos.elementAt(linhaStart);
+        cw.setLinhaEnd(linhaEnd);
         ComandoEndW cew = new ComandoEndW(linhaStart, linhaEnd);
         comandos.addElement(cew);
         
@@ -260,7 +265,10 @@ public class Interpretador {
             Object exp2= pilha.pop();
             Object exp1= pilha.pop();
             pilha.push(new ExpLogica(op,exp1,exp2));
-            palavraAtual = arq.proximaPalavra();
+            
+            if(!palavraAtual.equals("do"))
+            
+                palavraAtual = arq.proximaPalavra();
         }  
     }
     

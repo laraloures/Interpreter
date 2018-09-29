@@ -29,7 +29,7 @@ public class ComandoWhile extends Comando implements Condicao{
     
     public int executa() {
         double condicaoWhile = raiz.avalia();
-        System.out.println("condicaoWhile = "+condicaoWhile);
+        //System.out.println("condicaoWhile = "+condicaoWhile);
         //System.out.println("linhaStart = "+linhaStart);
         if(condicaoWhile == 1) { 
             //Se a condição for verdadeira, executa o bloco à partir do if
